@@ -1,4 +1,4 @@
-White Whine Quality by Gustavo Pereira
+White Wine Quality by Gustavo Pereira
 ========================================================
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
@@ -28,7 +28,7 @@ df$log.chlorides=log(df$chlorides)
 ```
 
 # Univariate Plots Section
-```{r, Univariate_Plots}
+```{r echo=FALSE, Univariate_Plots}
 str(df)
 levels(df$qualityFactor)
 summary(df)
@@ -37,19 +37,19 @@ qplot(fixed.acidity,data=df)
 ```
 
 Most wines have a fixed acidity between 5 and 10, presenting some outliers at up to 14.2.
-```{r}
+```{r echo=FALSE}
 qplot(volatile.acidity,data=df)
 
 ```
 
 Volatile acidity seems to range between 0.1 and 0.7. However, it has a long tail with a maximum of 1.1
-```{r}
+```{r echo=FALSE}
 qplot(citric.acid,data=df)
 
 ```
 
 Citric acid also presents an outlier at 1.66, whereas most wines are between 0 and 0.75.
-```{r}
+```{r echo=FALSE}
 qplot(residual.sugar,data=df)
 
 qplot(log(residual.sugar),data=df)
@@ -59,56 +59,56 @@ qplot(log(residual.sugar),data=df)
 Residual sugar is very long tailed, most data points are below 20, but the maximum is 65.8. 
 In order to explore more, I log-transformed the data. It is apparent that there are 2 peaks, perhaps showing a difference between sweet and dry wines.
 
-```{r}
+```{r echo=FALSE}
 qplot(chlorides,data=df)
 qplot(log(chlorides),data=df)
 ```
 
 Chlorides are (again) a long tailed distribution, with 75% of the data points below 0.05, but with a maximum of 0.346. Log-transforming yields a more normal-like distribution.
 
-```{r}
+```{r echo=FALSE}
 qplot(free.sulfur.dioxide,data=df)
 
 ```
 
 Free sulfur dioxide suffers from outliers as well. I would say that up to 100 they present a normal distribution. Yet, there's a point at 289.
 
-```{r}
+```{r echo=FALSE}
 qplot(total.sulfur.dioxide,data=df)
 
 ```
 
 Total sulfur dioxide follows a very similar distribution to free sulfur dioxide, albeit with larger numbers. Once again, there is an outlier at 440, well above the majority which seem to range between 80 and 220.
 
-```{r}
+```{r echo=FALSE}
 qplot(density,data=df)
 
 ```
 
 Density has a very compressed range, with 75% of wines within a range of less than 0.01. However, once again there are outliers at 1.039.
 
-```{r}
+```{r echo=FALSE}
 qplot(pH,data=df)
 
 ```
 
 pH seems to be the most normal of all the variables, with a median of 3.180 and a mean of 3.188.
 
-```{r}
+```{r echo=FALSE}
 qplot(sulphates,data=df)
 qplot(log(sulphates),data=df)
 ```
 
 Sulphates also seem to be long tailed. Log-transforming helps getting a more 'bell curve' shape. 
 
-```{r}
+```{r echo=FALSE}
 qplot(alcohol,data=df,binwidth=0.2)
 
 ```
 
 Alcohol seems to present bimodality. I could also argue that there is a plateau between the two peaks, perhaps showing tri-modality?
 
-```{r}
+```{r echo=FALSE}
 qplot(quality,data=df)
 table(df$quality)
 
@@ -118,7 +118,7 @@ Quality, although presented as a number, is clearly a categorical value, ranging
 
 In order to balance the classes, I created a system with 3 levels, 'Bad', 'Regular' and 'Good', by cutting the data as closely as possible in thirds. I did this by creating cuts up to 5, 6 and 9 respectively. This I called qualityFactor.
 
-```{r}
+```{r echo=FALSE}
 qplot(qualityFactor,data=df)
 table(df$qualityFactor)
 
@@ -150,7 +150,7 @@ As I mentioned before I created the qualityFactor variable. I also created log t
 Alcohol has the most unusual one, where there seems to be some bi- or tri- modality. Also, the quality factor, although well distributed might be better seen with more balanced classes.
 
 # Bivariate Plots Section
-```{r, Bivariate_Plots}
+```{r echo=FALSE,Bivariate_Plots}
 cor(df[,c(1:11,14:16,12)])
 #I changed the order so that quality stayed at the end. Also I removed qualityFactor as it is a categorical variable.
 
@@ -164,7 +164,7 @@ Quality seems to be more correlated to alcohol, log.chlorides, volatile.acidity 
 
 I then looked at these variables with respect to my bad, regular, good categories.
 
-```{r}
+```{r echo=FALSE}
 ggplot(aes(x=alcohol,color=qualityFactor),data=df)+geom_density()
 by(df$alcohol,df$qualityFactor,summary)
 ggplot(aes(x=total.sulfur.dioxide,color=qualityFactor),data=df)+geom_density()
@@ -180,7 +180,7 @@ It seems to me that a wine that is about to go sour will present all these chara
 
 Here is another plot showing the relationship between these variables and my classification.
 
-```{r}
+```{r echo=FALSE}
 p1=ggplot(aes(x=qualityFactor,y=total.sulfur.dioxide),data=df)+geom_boxplot()
 p2=ggplot(aes(x=qualityFactor,y=volatile.acidity),data=df)+geom_boxplot()
 p3=ggplot(aes(x=qualityFactor,y=log.chlorides),data=df)+geom_boxplot()
@@ -195,7 +195,7 @@ grid.arrange(p1,p2,p3,p4)
 
 I have mentioned this above and shown plots were this is discussed. The main variable that played a significant role was alcohol. Here is a comparison of quality per se and qualityFactor against alcohol. I will reuse one plot from above.
 
-```{r}
+```{r echo=FALSE}
 p1=ggplot(aes(x=qualityFactor,y=alcohol),data=df)+geom_boxplot()
 p2=ggplot(aes(x=as.factor(quality),y=alcohol),data=df)+geom_boxplot()
 grid.arrange(p1,p2)
@@ -207,7 +207,7 @@ I was surprised by the relationship between some variables and density. For exam
 
 Here are two scatter plots that show this relationship.
 
-```{r}
+```{r echo=FALSE}
 p1=ggplot(aes(x=density,y=total.sulfur.dioxide),data=df)+geom_point()+coord_cartesian(xlim=c(0.985,1.005))
 p2=ggplot(aes(x=density,y=log.chlorides),data=df)+geom_point()+coord_cartesian(xlim=c(0.985,1.005))
 grid.arrange(p1,p2)
